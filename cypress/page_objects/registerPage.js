@@ -31,6 +31,10 @@ class RegisterPage {
     return cy.get("button");
   }
 
+  get errorMessage() {
+    return cy.get(".alert-danger");
+  }
+
   registerWithValidData(firstName, lastName, email, password) {
     this.firstNameInput.type(firstName);
     this.lastNameInput.type(lastName);
