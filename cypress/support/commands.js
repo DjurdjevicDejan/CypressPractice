@@ -23,35 +23,35 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-Cypress.Commands.add("loginViaBackend", (email, password) =>{
-    cy.request({
-        method: "POST",
-        url: "https://gallery-api.vivifyideas.com/api/auth/login",
-        body: {
-            email: email,
-            password: password,
-        },
-    })
+Cypress.Commands.add("loginViaBackend", () => {
+  cy.request({
+    method: "POST",
+    url: "https://gallery-api.vivifyideas.com/api/auth/login",
+    body: {
+      email: Cypress.env("testUserEmail"),
+      password: Cypress.env("testUserPassword"),
+    },
+  })
     .its("body")
     .then((response) => {
-        window.localStorage.setItem("token", response.access_tokken);
+      window.localStorage.setItem("token", response.access_token);
     });
 });
 
 Cypress.Commands.add(
-    "registerViaBackend",
-    (firstName, LastName, email, password) =>{
-            cy.request({
-                method: "POST",
-                url: "https://gallery-api.vivifyideas.com/api/auth/register",
-                body: {
-                    first_name: firstName,
-                    last_name: LastName,
-                    email: email,
-                    password: password,
-                    password_confirmation: password,
-                    terms_and_conditions: true,
-                },
-            });
-        }
-        );
+  "registerViaBackend",
+  (firstName, lastName, email, password) => {
+    cy.request({
+      method: "POST",
+      url: "https://gallery-api.vivifyideas.com/api/auth/register",
+      body: {
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        password: password,
+        password_confirmation: password,
+        terms_and_conditions: true,
+      },
+    });
+  }
+);
