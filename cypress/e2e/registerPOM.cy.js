@@ -11,7 +11,7 @@ describe("register tests with POM", () => {
     randomNewPassword: faker.internet.password(8, true) + 1,
   };
 
-  before("visit gallery app and click the register button", () => {
+  beforeEach("visit gallery app and click the register button", () => {
     cy.visit("/");
     registerPage.registerNavbarLink.click();
     cy.url().should("include", "/register");
