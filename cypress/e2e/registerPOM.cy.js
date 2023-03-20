@@ -55,12 +55,12 @@ describe("register tests with POM", () => {
       .and("have.text", "The terms and conditions must be accepted.");
   });
 
-  it("register with valid data", () => {
+  it.only("register with valid data", () => {
     cy.intercept({
-      method:"POST",
-      url: "https://gallery-api.vivifyideas.com/api/auth/register",
-    }).as("validRegister")
-      
+      method: "POST",
+      // url: Cypress.env("apiUrl") + "/auth/register"
+      url: `${Cypress.env("apiUrl")}/auth/register`,
+    }).as("validRegister");
 
     registerPage.registerWithValidData(
       userData.randomFirstName,
@@ -69,12 +69,13 @@ describe("register tests with POM", () => {
       userData.randomPassword
     );
     cy.wait("@validRegister").then((interception) => {
-      console.log("INTERCEPTION", interception);
+      expect(interception.response.statusCode).eq(200);
+      expect(interception.response.statusMessage).eq("OK");
     });
     cy.url().should("not.include", "/register");
   });
 
-  it.only("register via backend", () => {
+  it("register via backend", () => {
     cy.registerViaBackend(
       userData.randomFirstName,
       userData.randomLastName,
